@@ -1,0 +1,24 @@
+{
+  "name": "kharidokeys-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kharidoonline29/kharidokeys-api.git"
+  },
+  "author": "sameer",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kharidoonline29/kharidokeys-api/issues"
+  },
+  "homepage": "https://github.com/kharidoonline29/kharidokeys-api#readme",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "googleapis": "^154.1.0"
+  }
+}

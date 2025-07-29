@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Get Confirmation ID for Phone Activation Keys</title>
+  <style>
+    /* Minimal reset & layout */
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+    }
+    .container {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 6px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    h1 {
+      margin: 0 0 1rem;
+      font-size: 1.25rem;
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin: 0.5rem 0 0.25rem;
+      font-size: 0.9rem;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.95rem;
+    }
+    button {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 1rem;
+      border: none;
+      border-radius: 4px;
+      background: #007bff;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    #result {
+      margin-top: 1rem;
+      padding: 0.5rem;
+      background: #fafafa;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-family: monospace;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Get Confirmation ID</h1>
+    
+    <label for="installationId">Installation ID</label>
+    <input
+      type="text"
+      id="installationId"
+      placeholder="033815-357101-860630-218090-894495-243386-132221-970210"
+      maxlength="63"
+    />
+    
+    <label for="orderId">Order ID</label>
+    <input
+      type="text"
+      id="orderId"
+      placeholder="406-8861795-4203507"
+      maxlength="20"
+    />
+    
+    <button id="getBtn">Get Confirmation ID</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    // Format Installation ID in chunks of 6 digits
+    function formatInstallationId(v) {
+      const d = v.replace(/\D/g, '');
+      const parts = [];
+      for (let i = 0; i < d.length; i += 6) {
+        parts.push(d.substr(i, 6));
+      }
+      return parts.join('-');
+    }
+
+    // Format Order ID as 3-7-7 digits
+    function formatOrderId(v) {
+      const d = v.replace(/\D/g, '');
+      const p1 = d.substr(0, 3);
+      const p2 = d.substr(3, 7);
+      const p3 = d.substr(10, 7);
+      let out = p1;
+      if (d.length > 3) out += '-' + p2;
+      if (d.length > 10) out += '-' + p3;
+      return out;
+    }
+    const iidField = document.getElementById('installationId');
+    const orderField = document.getElementById('orderId');
+
+    iidField.addEventListener('input', () => {
+      iidField.value = formatInstallationId(iidField.value);
+    });
+
+    orderField.addEventListener('input', () => {
+      orderField.value = formatOrderId(orderField.value);
+    });
+
+    document.getElementById('getBtn').addEventListener('click', () => {
+      const iid = iidField.value;
+      const order = orderField.value;
+
+      if (!iid || !order) {
+        alert('Please fill in both fields.');
+        return;
+      }
+
+      const url = `/getconfirmationid?orderid=${encodeURIComponent(order)}&iid=${encodeURIComponent(iid)}`;
+      fetch(url)
+        .then(res => res.text())
+        .then(text => {
+          document.getElementById('result').textContent = text;
+        })
+        .catch(err => {
+          document.getElementById('result').textContent = 'Error: ' + err;
+        });
+    });
+  </script>
+</body>
+</html>
