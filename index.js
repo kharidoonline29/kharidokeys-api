@@ -81,7 +81,7 @@ app.get('/getconfirmationid', async (req, res) => {
         if (data === undefined || data === null) {
             return res.status(404).json({ error: 'Confirmation ID not found' });
         }else{
-            return res.json({ Installation Id: data.confirmationid });
+            return res.json({ Confirmationid: data.confirmationid });
         }
 
     } catch (err) {
